@@ -94,7 +94,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$TallerID = $row[\'TallerID\'];
 			$Dia = date(\'Y-m-d\');
 			$sql3 = "INSERT INTO Taller_Inscrito (TallerID, Correo, FechaInscripcion) VALUES (\'$TallerID\', \'$correo\', \'$Dia\')";
-			mysqli_query($db, $sql3);
+			if(mysqli_query($db, $sql3)) {
+				$asunto = \'Te inscribiste en bla bla bla\';
+				$mensaje = \'Wena choro te inscribiste en bla bla bla\';
+				
+				mail($correo, $asunto, $mensaje);
+			};
 		}
 	} else {
 		echo "Error: " . $sql2 . "<br>" . mysqli_error($db);
