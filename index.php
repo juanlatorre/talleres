@@ -2,31 +2,36 @@
 include_once('sql/config.php');
 $query = mysqli_query($db, "SELECT * FROM Taller");
 
-session_start();
-if (session_id() == '' || !isset($_SESSION['login'])) {
-	 include 'dist/login.html';
-} else { 
-	echo 'Ya estás logeado.';
-}
+// session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$usuario = mysqli_real_escape_string($db,$_POST['usuario']);
-	$clave	 = mysqli_real_escape_string($db,$_POST['clave']);
-	
-	$sql = "SELECT AdministradorID FROM administradores WHERE usuario = '$usuario' and clave = '$clave'";
-	$result = mysqli_query($db,$sql);
-	$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-	$count = mysqli_num_rows($result);
-	
-	if($count == 1) {
-		session_register($usuario);
-		$_SESSION['login'] = $usuario;     
-			include 'dist/index.html';
-	      }else {
-	         $error = "Your Login Name or Password is invalid";
-		 }
-} 
-
+// if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) $$ $_SESSION['usuario'] != '')) {
+// 	include 'dist/crearTaller.html';
+// } else {
+// 	if (isset($_POST['login'])) {
+		// $usuario = $_POST['usuario'];
+// 		$clave 	 = md5($_POST['clave']);
+//
+// 		$query = "SELECT * FROM administradores WHERE usuario='$usuario' and clave='$clave'";
+// 		$result = mysqli_query($db, $query);
+// 		$count = mysqli_num_rows($result);
+//
+// 		if ($cout > 0) {
+// 			$result = mysqli_fetch_assoc(mysqli_query($db, $query));
+// 			$id = $result['AdministradorID'];
+// 			$cookie_name = "usuario";
+// 			$cookie_value = $id;
+// 			// calculo de tiempo: 86400 = 1 día (86400*30 = 1 Mes)
+// 			$expiry = time() + (86400 * 30);
+// 			$recordar = $_POST['recordar'];
+// 			if ($recordar == 'true') {
+// 				setcookie($cookie_name, $cookie_value, $expiry);
+// 			} else {
+// 				session_start();
+// 				$_SESSION['usuario'] = $id;
+// 			}
+	// 	}
+	// }
+	//}
 ?>
 
 <!DOCTYPE html>
