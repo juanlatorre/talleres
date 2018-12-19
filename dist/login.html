@@ -9,11 +9,11 @@
 	<div class="container">
 		<div class="columns">
 			<div class="column is-half is-offset-one-quarter">
-				<form action="" method="">
+				<form method="post">
 					<div class="field">
 				  		<label class="label">Usuario</label>
 				  		<div class="control has-icons-left has-icons-right">
-				    		<input class="input" type="text">
+				    		<input class="input" name="usuario" type="text">
 				    		<span class="icon is-small is-left">
 				      			<i class="fas fa-user"></i>
 				    		</span>
@@ -23,7 +23,7 @@
 					<div class="field">
 				  		<label class="label">Contraseña</label>
 				  		<div class="control has-icons-left has-icons-right">
-				    		<input class="input" type="password">
+				    		<input class="input" name="clave" type="password">
 				    		<span class="icon is-small is-left">
 				      			<i class="fas fa-key"></i>
 				    		</span>
@@ -39,7 +39,7 @@
 					
 					<div class="field">
 					  <div class="control has-text-centered">
-					    <button class="button is-link">Entrar</button>
+					    <button name="login" type="submit" class="button is-link">Entrar</button>
 					  </div>
 					</div>
 				</form>

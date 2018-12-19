@@ -2,36 +2,40 @@
 include_once('sql/config.php');
 $query = mysqli_query($db, "SELECT * FROM Taller");
 
-// session_start();
+session_start();
 
-// if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) $$ $_SESSION['usuario'] != '')) {
-// 	include 'dist/crearTaller.html';
-// } else {
-// 	if (isset($_POST['login'])) {
-		// $usuario = $_POST['usuario'];
-// 		$clave 	 = md5($_POST['clave']);
-//
-// 		$query = "SELECT * FROM administradores WHERE usuario='$usuario' and clave='$clave'";
-// 		$result = mysqli_query($db, $query);
-// 		$count = mysqli_num_rows($result);
-//
-// 		if ($cout > 0) {
-// 			$result = mysqli_fetch_assoc(mysqli_query($db, $query));
-// 			$id = $result['AdministradorID'];
-// 			$cookie_name = "usuario";
-// 			$cookie_value = $id;
-// 			// calculo de tiempo: 86400 = 1 día (86400*30 = 1 Mes)
-// 			$expiry = time() + (86400 * 30);
-// 			$recordar = $_POST['recordar'];
-// 			if ($recordar == 'true') {
-// 				setcookie($cookie_name, $cookie_value, $expiry);
-// 			} else {
-// 				session_start();
-// 				$_SESSION['usuario'] = $id;
-// 			}
-	// 	}
-	// }
-	//}
+if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) && $_SESSION['usuario'] !='')) {
+	include 'dist/crearTaller.html';
+} else {
+	include 'dist/login.html';
+	
+	if (isset($_POST['login'])) {
+		$usuario = $_POST['usuario'];
+		$clave 	 = md5($_POST['clave']);
+
+		$query = "SELECT * FROM administradores WHERE usuario='$usuario' and clave='$clave'";
+		$result = mysqli_query($db, $query);
+		$count = mysqli_num_rows($result);
+		
+		if ($count > 0) {
+			$result = mysqli_fetch_assoc(mysqli_query($db, $query));
+			$id = $result['AdministradorID'];
+			$cookie_name = "usuario";
+			$cookie_value = $id;
+			// calculo de tiempo: 86400 = 1 día (86400*30 = 1 Mes)
+			$expiry = time() + (86400 * 30);
+			$recordar = $_POST['recordar'];
+			if ($recordar == 'true') {
+				setcookie($cookie_name, $cookie_value, $expiry);
+			} else {
+				session_start();
+				$_SESSION['usuario'] = $id;
+			}
+			header("Location: index.php");
+		}
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
