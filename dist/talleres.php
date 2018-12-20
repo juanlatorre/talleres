@@ -1,15 +1,5 @@
 <section class="section">
 	<div class="container">
-		<h1 class="title"><i class="fa fa-check fa-lg" aria-hidden="true"></i>
-			Talleres Cabo Blanco | Cocina & Taller
-		</h1>
-		<p class="subtitle">
-			Listado de Talleres
-		</p>
-	</div>
-</section>
-<section class="section">
-	<div class="container">
 		<div class="columns">
 			<?php for($i = 1; $row = mysqli_fetch_array($query); $i++) { ?>
 				<div class="column is-one-quarter">
