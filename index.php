@@ -5,9 +5,9 @@ $query = mysqli_query($db, "SELECT * FROM Taller");
 session_start();
 
 if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) && $_SESSION['usuario'] !='')) {
-	include 'dist/admin.html';
+	include 'dist/admin.php';
 } else {
-	include 'dist/login.html';
+	include 'dist/login.php';
 	
 	if (isset($_POST['login'])) {
 		$usuario = $_POST['usuario'];
@@ -31,7 +31,7 @@ if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION
 				session_start();
 				$_SESSION['usuario'] = $id;
 			}
-			include 'dist/admin.html';
+			header("Refresh:0");
 		} else {
 			echo "<div class='notification is-danger'><button class='delete'></button>Usuario o Contraseña inválida, intente de nuevo.</div>";
 		}
