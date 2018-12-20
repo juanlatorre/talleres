@@ -1,6 +1,6 @@
 <section class="section">
 	<div class="container">
-		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+		<form method="post" enctype="multipart/form-data">
 			<div class="columns">
 				<div class="column is-half">
 					<div class="field">
@@ -74,11 +74,7 @@
 		
 			<div class="field is-grouped">
 				<div class="control">
-					<button type="submit" class="button is-link">Agregar</button>
-				</div>
-				
-				<div class="control">
-					<a href="logout.php">Cerrar Sesión</a>
+					<button type="submit" name="crearTaller" class="button is-link">Agregar</button>
 				</div>
 			</div>
 		</form>
