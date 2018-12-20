@@ -1,12 +1,5 @@
 <section class="section">
 	<div class="container">
-		<h1 class="title"><i class="fa fa-check fa-lg" aria-hidden="true"></i>
-			Crear Taller
-		</h1>
-	</div>
-</section>
-<section class="section">
-	<div class="container">
 		<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
 			<div class="columns">
 				<div class="column is-half">

@@ -5,7 +5,7 @@ $query = mysqli_query($db, "SELECT * FROM Taller");
 session_start();
 
 if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) && $_SESSION['usuario'] !='')) {
-	include 'dist/crearTaller.html';
+	include 'dist/admin.html';
 } else {
 	include 'dist/login.html';
 	
@@ -31,7 +31,9 @@ if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION
 				session_start();
 				$_SESSION['usuario'] = $id;
 			}
-			header("Location: index.php");
+			include 'dist/admin.html';
+		} else {
+			echo "<div class='notification is-danger'><button class='delete'></button>Usuario o Contraseña inválida, intente de nuevo.</div>";
 		}
 	}
 }
@@ -45,6 +47,7 @@ if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Talleres Cabo Blanco</title>
 	<link rel="stylesheet" href="dist/css/styles.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
