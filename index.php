@@ -108,12 +108,14 @@
 		$foto = $_FILES['foto']['tmp_name'];
 		$fotoContent = addslashes(file_get_contents($foto));	
 		
-		$qqq = "INSERT INTO Taller (Nombre, Fecha, Hora, Descripcion, Foto, Disponibilidad, Capacidad, Precio) VALUES ('$nombre', '$fecha', '$hora', '$descripcion', '$fotoContent', '1', '$capacidad', '$precio')";
+		$enlace = 'http://talleres.caboblanco.cl/taller/' . str_replace(' ', '-', strtolower($nombre) . '.php');
+		
+		$qqq = "INSERT INTO Taller (Nombre, Fecha, Hora, Descripcion, Foto, Disponibilidad, Capacidad, Precio, Enlace) VALUES ('$nombre', '$fecha', '$hora', '$descripcion', '$fotoContent', '1', '$capacidad', '$precio', '$enlace')";
 
 		if (mysqli_query($db, $qqq)) {
-			echo '<div class="notification is-primary"><button class="delete"></button>Tu taller fue creado correctamente, el link de inscripciones es: <a href="#">'.$nombre.'</a></div>';
+			echo '<div class="notification is-primary"><button class="delete"></button>Tu taller fue creado correctamente, el link de inscripciones es: <a href="'.$enlace.'">'.$nombre.'</a></div>';
 			$crearTaller = true;
-			$tallerNuevo = fopen("/taller/".str_replace(' ', '-', strtolower($nombre)).".php", "w") or die("No se puede crear el archivo!");
+			$tallerNuevo = fopen("taller/".str_replace(' ', '-', strtolower($nombre)).".php", "w") or die("No se puede crear el archivo!");
 		} else {
 			echo '<div class="notification is-danger"><button class="delete"></button>Error al crear el Taller.</a></div>';
 			$crearTaller = false;
@@ -158,7 +160,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Taller X</title>
+		<title>Taller '.$nombre.'</title>
 		<link rel="stylesheet" href="../dist/css/styles.css">
 	</head>
 	<body>
