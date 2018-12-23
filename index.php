@@ -5,7 +5,7 @@ $query = mysqli_query($db, "SELECT * FROM Taller");
 session_start();
 
 if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) && $_SESSION['usuario'] !='')) {
-	echo '<script>$("#contenido").load("dist/admin.php")</script>';
+	$contenido = include "dist/admin.php";
 } else {
 	include "dist/login.php";
 	
@@ -228,8 +228,7 @@ function test_input($data) {
 	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
-	<div id="contenido">
-	</div>
+	<?php echo $contenido;?>
 </body>
 </html>
 

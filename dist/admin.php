@@ -10,13 +10,18 @@
 	function crearTalleres() {
 		$('#mainSection').load('dist/crearTaller.php');
 	}
+	
+	function cerrarSesion() {
+		window.open('/logout.php', '_self');
+	}
 </script>
 
 <section class="section">
 	<div class="container">
 		<h1 class="title"></i>
-			Administración Talleres Cabo Blanco | Cocina & Taller
+			Administración Talleres Cabo Blanco | Cocina & Taller | <button onclick="cerrarSesion()" class="button">Cerrar Sesión</button>
 		</h1>
+		
 	</div>
 </section>
 <section class="section" id="mainSection">
