@@ -1,3 +1,9 @@
+<?php
+session_start();
+ob_start();
+
+include_once('sql/config.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,11 +16,6 @@
 </head>
 <body>
 	<?php
-	include_once('sql/config.php');
-	$query = mysqli_query($db, "SELECT * FROM Taller");
-
-	session_start();
-
 	if((isset($_COOKIE['usuario']) && $_COOKIE['usuario'] != '') || (isset($_SESSION['usuario']) && $_SESSION['usuario'] !='')) {
 		include "dist/admin.php";
 	} else {
@@ -39,7 +40,6 @@
 				if ($recordar == 'true') {
 					setcookie($cookie_name, $cookie_value, $expiry);
 				} else {
-					session_start();
 					$_SESSION['usuario'] = $id;
 				}
 				header("Refresh:0");
@@ -123,6 +123,14 @@
 	
 		$contenidoGenerado = '<?php
 	include_once("../sql/config.php");
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
+	require "../phpmailer/PHPMailer.php";
+	require "../phpmailer/SMTP.php";
+	require "../phpmailer/Exception.php";
+
+
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$nombre = htmlspecialchars(stripslashes(trim($_POST["nombre"])));
 		$correo = htmlspecialchars(stripslashes(trim($_POST["correo"])));
@@ -142,12 +150,31 @@
 			while($row = mysqli_fetch_array($resultado)) {
 				$TallerID = $row[\'TallerID\'];
 				$Dia = date(\'Y-m-d\');
-				$sql3 = "INSERT INTO Taller_Inscrito (TallerID, Correo, FechaInscripcion) VALUES (\'$TallerID\', \'$correo\', \'$Dia\')";
+				$sql3 = "INSERT INTO Taller_Inscrito (TallerID, Correo, FechaInscripcion, Pagado, Asistencia) VALUES (\'$TallerID\', \'$correo\', \'$Dia\', 0, 0)";
 				if(mysqli_query($db, $sql3)) {
-					$asunto = \'Te inscribiste en bla bla bla\';
-					$mensaje = \'Wena choro te inscribiste en bla bla bla\';
-				
-					mail($correo, $asunto, $mensaje);
+					$mail = new PHPMailer(true);
+					try {
+						//Server settings
+						$mail->isSMTP();
+						$mail->Host = "terralia.cl";
+						$mail->SMTPAuth = true;
+						$mail->Username = "caboblanco@terralia.cl";
+						$mail->Password = "khl0695";
+						$mail->SMTPSecure = "ssl";
+						$mail->Port = 465;
+					
+						//Recipients
+						$mail->setFrom("caboblanco@terralia.cl", "Karime Harcha");
+						$mail->addAddress($correo, $nombre);
+						
+						//Content
+						$mail->isHTML(true);
+						$mail->Subject = "Información de Pago '.$nombre.'";
+						$mail->Body    = "<p>Muchísimas gracias {{Nombre}}  ! Ya estas en nuestra lista !</p><p>Cualquier pregunta, puedes contestar a este mail. Es muy grato para nosotros recibir vuestro feedback!</p><p>Te invitamos a visitar nuestros futuros talleres en nuestra web <u>Talleres Cabo Blanco C&T</u></p><p>Para finalizar el proceso de inscripción debes realizar la transferencia por su valor a la cuenta señalada, enviándonos a este mail la confirmación de transferencia, <b>señalando claramente el taller que pagas.</b></p><p><b>Cuenta Corriente N° 740112597-8 </b></p> <p><b>Banco Santander</b></p> <p><b> a nombre de Karime Harcha L.</b></p> <p><b>RUT 8033963-1</b></p>";
+						$mail->AltBody = "<p>Muchísimas gracias {{Nombre}}  ! Ya estas en nuestra lista !</p><p>Cualquier pregunta, puedes contestar a este mail. Es muy grato para nosotros recibir vuestro feedback!</p><p>Te invitamos a visitar nuestros futuros talleres en nuestra web <u>Talleres Cabo Blanco C&T</u></p><p>Para finalizar el proceso de inscripción debes realizar la transferencia por su valor a la cuenta señalada, enviándonos a este mail la confirmación de transferencia, <b>señalando claramente el taller que pagas.</b></p><p><b>Cuenta Corriente N° 740112597-8 </b></p> <p><b>Banco Santander</b></p> <p><b> a nombre de Karime Harcha L.</b></p> <p><b>RUT 8033963-1</b></p>";
+					
+						$mail->send();
+					} catch (Exception $e) {}
 				};
 			}
 		} else {
@@ -231,8 +258,3 @@
 	?>
 </body>
 </html>
-
-<?php
-$mysqli->close();
-?>
-
