@@ -1,0 +1,3 @@
+project=talleres
+test=rspec
+template=erb
