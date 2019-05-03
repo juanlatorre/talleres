@@ -24,4 +24,14 @@ database.login = async (email, password) => {
   }
 };
 
+database.logout = async () => {
+  try {
+    await firebase.auth().signOut();
+    store.commit("setCurrentUser", null);
+    return true;
+  } catch (error) {
+    return error;
+  }
+};
+
 export default database;

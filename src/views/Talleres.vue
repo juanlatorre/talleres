@@ -6,10 +6,6 @@
 
 <script>
 export default {
-  name: "Talleres",
-  data() {
-    return {};
-  },
-  methods: {}
+  name: "talleres"
 };
 </script>
