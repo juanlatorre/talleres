@@ -1,28 +1,44 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "@/views/Home";
-import Login from "@/views/Login";
-import Talleres from "@/views/Talleres";
+import * as firebase from "firebase";
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
   mode: "history",
   routes: [
     {
-      path: "/",
-      name: "home",
-      component: Home
-    },
-    {
       path: "/login",
       name: "login",
-      component: Login
+      component: () =>
+        import(/* webpackChunkName: "login" */ "./views/Login.vue")
     },
     {
       path: "/talleres",
       name: "talleres",
-      component: Talleres
+      component: () =>
+        import(/* webpackChunkName: "talleres" */ "./views/Talleres.vue"),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        next({
+          path: "/login"
+        });
+      } else {
+        next();
+      }
+    });
+  } else {
+    next();
+  }
+});
+
+export default router;

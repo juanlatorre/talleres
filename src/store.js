@@ -11,5 +11,8 @@ export default new Vuex.Store({
     setCurrentUser(state, payload) {
       state.currentUser = payload;
     }
+  },
+  getters: {
+    currentUser: state => state.currentUser
   }
 });
