@@ -1,27 +1,52 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "@/helpers/firebaseInit.js";
+import router from "@/router.js";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
-    user: null
+    user: false
+  },
+  getters: {
+    user(state) {
+      return state.user;
+    }
   },
   mutations: {
-    setUser(state, value) {
-      state.user = value;
+    setUser(state, user) {
+      state.user = user;
     },
-    login(state, payload) {
+    login(state, credentials) {
       firebase
         .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
+        .signInWithEmailAndPassword(credentials.email, credentials.password)
         .then(response => {
           state.user = response.user;
         })
         .catch(error => {
           console.error(error.message);
         });
+    },
+    logout() {
+      firebase
+        .auth()
+        .signOut() // eslint-disable-next-line
+        .then(_ => router.replace("login"));
+    }
+  },
+  actions: {
+    setUser({ commit }, user) {
+      commit("setUser", user);
+    },
+    login({ commit }, credentials) {
+      commit("login", credentials);
+    },
+    logout({ commit }) {
+      commit("logout");
     }
   }
 });
+
+export default store;

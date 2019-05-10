@@ -29,8 +29,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   firebase.auth().onAuthStateChanged(user => {
-    // initially user = null, after auth it will be either <fb_user> or false
-    store.commit("setUser", user || false);
+    store.dispatch("setUser", user || false);
     let permiso = to.matched.some(record => record.meta.requireLogin);
 
     if (permiso && !user) {

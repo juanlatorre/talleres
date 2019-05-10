@@ -6,29 +6,23 @@
           <div class="content">
             <p class="title is-4">Acceder</p>
             <p class="subtitle is-5">Ir a Talleres</p>
-            <form @submit.prevent="login">
+            <section>
               <b-field>
-                <b-input
-                  v-model="email"
-                  type="email"
-                  icon-pack="fas"
-                  icon="envelope"
-                  placeholder="Email"
-                ></b-input>
+                <b-input v-model="email" type="email" icon="envelope" placeholder="Email"></b-input>
               </b-field>
               <b-field>
                 <b-input
                   v-model="password"
                   type="password"
-                  icon-pack="fas"
                   icon="lock"
                   placeholder="Clave"
+                  password-reveal
                 ></b-input>
               </b-field>
               <b-field class="has-text-right">
-                <b-button type="is-primary">Acceder</b-button>
+                <b-button @click.native="login" type="is-primary">Acceder</b-button>
               </b-field>
-            </form>
+            </section>
           </div>
         </div>
       </div>
@@ -37,7 +31,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -47,20 +40,17 @@ export default {
   },
   methods: {
     login() {
-      this.$store.commit("login", {
+      this.$store.dispatch("login", {
         email: this.email,
         password: this.password
       });
     }
-  },
-  computed: {
-    ...mapState(["user"])
   }
 };
 </script>
 
 <style scoped>
 .columns {
-  margin-top: 8em;
+  margin-top: 6em;
 }
 </style>

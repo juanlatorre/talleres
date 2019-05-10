@@ -1,60 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <div class="hello">
-      <h1>wena</h1>
-      <p>
-        For a guide and recipes on how to configure / customize this project,
-        <br>check out the
-        <a
-          href="https://cli.vuejs.org"
-          target="_blank"
-          rel="noopener"
-        >vue-cli documentation</a>.
-      </p>
+  <div>
+    <button @click="logout" v-if="user !== false">Logout</button>
 
-      <button @click="logout" v-if="user !== null">Logout</button>
-
-      <pre>
-        {{ user.email }}
-      </pre>
-    </div>
+    <pre>
+      {{ user.email }}
+    </pre>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import firebase from "@/helpers/firebaseInit.js";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   methods: {
-    logout() {
-      firebase
-        .auth()
-        .signOut() // eslint-disable-next-line
-        .then(_ => this.$router.replace("login"));
-    }
+    ...mapActions({
+      logout: "logout"
+    })
   },
   computed: {
-    ...mapState(["user"])
+    ...mapGetters(["user"])
   }
 };
 </script>
 
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 </style>
 

@@ -7,7 +7,7 @@ import "buefy/dist/buefy.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 Vue.config.productionTip = false;
-Vue.use(Buefy);
+Vue.use(Buefy, { defaultIconPack: "fas" });
 
 new Vue({
   router,

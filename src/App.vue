@@ -1,7 +1,19 @@
 <template>
-  <router-view/>
+  <div id="app">
+    <navbar v-if="user !== false"/>
+    <router-view/>
+  </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+import Navbar from "@/components/Navbar";
+export default {
+  components: {
+    Navbar
+  },
+  computed: {
+    ...mapGetters(["user"])
+  }
+};
 </script>
