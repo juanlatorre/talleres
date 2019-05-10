@@ -31,7 +31,7 @@ export default {
     logout() {
       firebase
         .auth()
-        .signOut()
+        .signOut() // eslint-disable-next-line
         .then(_ => this.$router.replace("login"));
     }
   },

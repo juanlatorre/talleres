@@ -1,10 +1,38 @@
 <template>
-  <div>
-    <form @submit.prevent="login">
-      <input v-model="email" type="email" placeholder="Correo">
-      <input v-model="pass" type="password" placeholder="Contraseña">
-      <input type="submit" value="Acceder">
-    </form>
+  <div class="columns is-mobile">
+    <div class="column is-6-mobile is-offset-3-mobile is-4-tablet is-offset-4-tablet">
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <p class="title is-4">Acceder</p>
+            <p class="subtitle is-5">Ir a Talleres</p>
+            <form @submit.prevent="login">
+              <b-field>
+                <b-input
+                  v-model="email"
+                  type="email"
+                  icon-pack="fas"
+                  icon="envelope"
+                  placeholder="Email"
+                ></b-input>
+              </b-field>
+              <b-field>
+                <b-input
+                  v-model="password"
+                  type="password"
+                  icon-pack="fas"
+                  icon="lock"
+                  placeholder="Clave"
+                ></b-input>
+              </b-field>
+              <b-field class="has-text-right">
+                <b-button type="is-primary">Acceder</b-button>
+              </b-field>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,12 +42,15 @@ export default {
   data() {
     return {
       email: "",
-      pass: ""
+      password: ""
     };
   },
   methods: {
     login() {
-      this.$store.commit("login", { email: this.email, pass: this.pass });
+      this.$store.commit("login", {
+        email: this.email,
+        password: this.password
+      });
     }
   },
   computed: {
@@ -29,14 +60,7 @@ export default {
 </script>
 
 <style scoped>
-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-form > * {
-  display: block;
+.columns {
+  margin-top: 8em;
 }
 </style>

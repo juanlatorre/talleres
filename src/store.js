@@ -15,7 +15,7 @@ export default new Vuex.Store({
     login(state, payload) {
       firebase
         .auth()
-        .signInWithEmailAndPassword(payload.email, payload.pass)
+        .signInWithEmailAndPassword(payload.email, payload.password)
         .then(response => {
           state.user = response.user;
         })
