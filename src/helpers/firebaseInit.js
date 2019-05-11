@@ -1,7 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyAMf4SKxT5eoI6MotAyFx6a1HX2PnQxnak",
   authDomain: "talleres-16e00.firebaseapp.com",
   databaseURL: "https://talleres-16e00.firebaseio.com",
@@ -12,5 +13,8 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
+export const db = firebase.firestore();
+export const auth = firebase.auth();
 
 export default firebase;

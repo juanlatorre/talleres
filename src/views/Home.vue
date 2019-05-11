@@ -1,28 +1,30 @@
 <template>
-  <div>
-    <button @click="logout" v-if="user !== false">Logout</button>
-
-    <pre>
-      {{ user.email }}
-    </pre>
-  </div>
+  <section class="container">
+    <div class="header">
+      <p class="title is-5">Listado de Talleres</p>
+      <p class="title is-5 clickable is-underline">A/Z</p>
+    </div>
+    <div>
+      <talleres/>
+    </div>
+  </section>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import Talleres from "@/components/Talleres.vue";
 
 export default {
-  methods: {
-    ...mapActions({
-      logout: "logout"
-    })
-  },
-  computed: {
-    ...mapGetters(["user"])
+  components: {
+    Talleres
   }
 };
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1em;
+}
 </style>
 

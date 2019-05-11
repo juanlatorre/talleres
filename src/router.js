@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import firebase from "@/helpers/firebaseInit.js";
+import { auth } from "@/helpers/firebaseInit.js";
 import store from "./store.js";
 
 Vue.use(Router);
@@ -23,12 +23,20 @@ const router = new Router({
       name: "login",
       component: () =>
         import(/* webpackChunkName: "login" */ "./views/Login.vue")
+    },
+    {
+      path: "/taller/:id",
+      component: () =>
+        import(/* webpackChunkName: "taller" */ "./views/Taller.vue"),
+      meta: {
+        requireLogin: true
+      }
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  firebase.auth().onAuthStateChanged(user => {
+  auth.onAuthStateChanged(user => {
     store.dispatch("setUser", user || false);
     let permiso = to.matched.some(record => record.meta.requireLogin);
 

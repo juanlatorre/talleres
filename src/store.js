@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from "@/helpers/firebaseInit.js";
+import { auth } from "@/helpers/firebaseInit.js";
 import router from "@/router.js";
 
 Vue.use(Vuex);
@@ -19,8 +19,7 @@ const store = new Vuex.Store({
       state.user = user;
     },
     login(state, credentials) {
-      firebase
-        .auth()
+      auth
         .signInWithEmailAndPassword(credentials.email, credentials.password)
         .then(response => {
           state.user = response.user;
@@ -30,10 +29,8 @@ const store = new Vuex.Store({
         });
     },
     logout() {
-      firebase
-        .auth()
-        .signOut() // eslint-disable-next-line
-        .then(_ => router.replace("login"));
+      // eslint-disable-next-line
+      auth.signOut().then(_ => router.replace("login"));
     }
   },
   actions: {

@@ -17,3 +17,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.clickable {
+  cursor: pointer;
+}
+
+.is-underline {
+  text-decoration: underline;
+}
+</style>
+
