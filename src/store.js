@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { auth, db } from "@/helpers/firebaseInit.js";
+import firebase, { auth, db } from "@/helpers/firebaseInit.js";
 import router from "@/router.js";
 
 Vue.use(Vuex);
@@ -33,7 +33,23 @@ const store = new Vuex.Store({
       auth.signOut().then(_ => router.replace("login"));
     },
     inscribirCliente(state, datos) {
-      console.info(datos);
+      db.collection("talleres")
+        .where("id", "==", Number(datos.id))
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            db.collection("talleres")
+              .doc(doc.id)
+              .update({
+                inscritos: firebase.firestore.FieldValue.arrayUnion({
+                  nombre: datos.nombre,
+                  correo: datos.correo,
+                  telefono: datos.telefono,
+                  pagado: false
+                })
+              });
+          });
+        });
     }
   },
   actions: {
@@ -47,7 +63,11 @@ const store = new Vuex.Store({
       commit("logout");
     },
     inscribirCliente({ commit }, datos) {
-      commit("inscribirCliente", datos);
+      // eslint-disable-next-line
+      return new Promise((resolve, reject) => {
+        commit("inscribirCliente", datos);
+        resolve();
+      });
     }
   }
 });

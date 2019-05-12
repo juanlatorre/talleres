@@ -48,17 +48,34 @@ export default {
     send() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store.dispatch("inscribirCliente", {
-            id: this.id,
-            nombre: this.nombre,
-            correo: this.correo,
-            telefono: this.telefono
-          });
-          // this.$toast.open({
-          //   message: "Inscripción enviada!",
-          //   type: "is-success",
-          //   position: "is-bottom"
-          // });
+          this.$store
+            .dispatch("inscribirCliente", {
+              id: this.id,
+              nombre: this.nombre,
+              correo: this.correo,
+              telefono: this.telefono
+            })
+            .then(() => {
+              this.$snackbar.open({
+                duration: 5000,
+                message:
+                  "Gracias por tu interés en nuestro taller, pronto recibirás en tu correo la información de pago.",
+                type: "is-success",
+                position: "is-bottom-right",
+                actionText: "Ok",
+                queue: false
+              });
+            }) // eslint-disable-next-line
+            .catch(error => {
+              this.$snackbar.open({
+                duration: 5000,
+                message: "Hubo un error al inscribirte en el taller.",
+                type: "is-warning",
+                position: "is-bottom-right",
+                actionText: "Ok",
+                queue: false
+              });
+            });
           return;
         }
       });
