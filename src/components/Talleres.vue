@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import firebase from "@/helpers/firebaseInit.js";
 import { db } from "@/helpers/firebaseInit.js";
 
 export default {

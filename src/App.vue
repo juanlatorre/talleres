@@ -1,21 +1,11 @@
 <template>
   <div id="app">
-    <navbar v-if="user !== false"/>
     <router-view/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Navbar from "@/components/Navbar";
-export default {
-  components: {
-    Navbar
-  },
-  computed: {
-    ...mapGetters(["user"])
-  }
-};
+export default {};
 </script>
 
 <style>
@@ -25,6 +15,15 @@ export default {
 
 .is-underline {
   text-decoration: underline;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid #808e9b;
+  margin: 1em 0;
+  padding: 0;
 }
 </style>
 

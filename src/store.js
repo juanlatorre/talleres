@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { auth } from "@/helpers/firebaseInit.js";
+import { auth, db } from "@/helpers/firebaseInit.js";
 import router from "@/router.js";
 
 Vue.use(Vuex);
@@ -31,6 +31,9 @@ const store = new Vuex.Store({
     logout() {
       // eslint-disable-next-line
       auth.signOut().then(_ => router.replace("login"));
+    },
+    inscribirCliente(state, datos) {
+      console.info(datos);
     }
   },
   actions: {
@@ -42,6 +45,9 @@ const store = new Vuex.Store({
     },
     logout({ commit }) {
       commit("logout");
+    },
+    inscribirCliente({ commit }, datos) {
+      commit("inscribirCliente", datos);
     }
   }
 });
