@@ -9,7 +9,7 @@
         <footer class="card-footer">
           <p class="card-footer-item">
             <span>
-              <a href="#">
+              <a href="javascript:void(0);" @click="editarTaller(taller.id)">
                 <i class="fas fa-pencil-alt"></i> Editar
               </a>
             </span>
@@ -56,7 +56,10 @@ export default {
         });
     },
     abrirTaller(id) {
-      this.$router.push("/taller/" + id);
+      this.$router.push("/taller/ver/" + id);
+    },
+    editarTaller(id) {
+      this.$router.push("/taller/editar/" + id);
     },
     eliminarTaller(id) {
       db.collection("talleres")

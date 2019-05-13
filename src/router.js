@@ -25,7 +25,7 @@ const router = new Router({
         import(/* webpackChunkName: "login" */ "./views/Login.vue")
     },
     {
-      path: "/taller/:id",
+      path: "/taller/:accion/:id",
       component: () =>
         import(/* webpackChunkName: "taller" */ "./views/Taller.vue"),
       meta: {

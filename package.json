@@ -12,6 +12,7 @@
     "buefy": "^0.7.5",
     "core-js": "^2.6.5",
     "firebase": "^6.0.1",
+    "flatpickr": "^4.5.7",
     "vee-validate": "^2.2.7",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",

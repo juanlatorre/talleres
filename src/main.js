@@ -8,7 +8,25 @@ import "buefy/dist/buefy.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 Vue.config.productionTip = false;
-Vue.use(Buefy, { defaultIconPack: "fas" });
+Vue.use(Buefy, {
+  defaultIconPack: "fas",
+  defaultDayNames: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+  defaultMonthNames: [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+  ],
+  defaultFirstDayOfWeek: 1
+});
 Vue.use(VeeValidate, {
   events: ""
 });

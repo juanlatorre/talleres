@@ -1,7 +1,7 @@
 <template>
   <div v-if="!isEmpty(taller)">
     <Header/>
-    <Container>
+    <Container v-if="this.accion == 'ver'">
       <Information
         :nombre="taller.nombre"
         :fecha="taller.fecha"
@@ -11,6 +11,18 @@
       />
       <hr>
       <Formulario :id="taller.id"/>
+    </Container>
+    <Container v-else>
+      <Editar
+        :id="docID"
+        :nombre="taller.nombre"
+        :fechaRaw="taller.fecha"
+        :hora="taller.hora"
+        :descripcion="taller.descripcion"
+        :imagen="taller.imagen"
+        :disponible="taller.disponible"
+        :cupos="taller.cupos"
+      />
     </Container>
   </div>
   <Loader v-else/>
@@ -22,12 +34,15 @@ import Header from "@/components/Taller/Header.vue";
 import Container from "@/components/Taller/Container.vue";
 import Information from "@/components/Taller/Information.vue";
 import Formulario from "@/components/Taller/Formulario.vue";
+import Editar from "@/components/Taller/Editar.vue";
 import { db } from "@/helpers/firebaseInit.js";
 
 export default {
   data() {
     return {
-      taller: {}
+      accion: this.$route.params.accion,
+      taller: {},
+      docID: null
     };
   },
   methods: {
@@ -45,6 +60,7 @@ export default {
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
           this.taller = doc.data();
+          this.docID = doc.id;
         });
       });
   },
@@ -53,7 +69,16 @@ export default {
     Container,
     Information,
     Loader,
-    Formulario
+    Formulario,
+    Editar
+  },
+  beforeCreate() {
+    if (
+      this.$route.params.accion !== "ver" &&
+      this.$route.params.accion !== "editar"
+    ) {
+      this.$router.replace("/");
+    }
   }
 };
 </script>
