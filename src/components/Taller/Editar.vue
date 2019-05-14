@@ -3,7 +3,7 @@
     <b-tabs position="is-centered" class="block" v-model="activeTab">
       <b-tab-item label="Información">
         <b-field label="Nombre">
-          <b-input v-model="name"></b-input>
+          <b-input v-model="childData.nombre"></b-input>
         </b-field>
 
         <b-field label="Fecha">
@@ -11,27 +11,31 @@
             placeholder="Click para elegir..."
             :min-date="minDate"
             icon="calendar-alt"
-            v-model="date"
+            v-model="childData.fecha"
           ></b-datepicker>
         </b-field>
 
         <b-field label="Hora">
-          <b-clockpicker placeholder="Click para elegir..." icon="clock" v-model="time"></b-clockpicker>
+          <b-clockpicker placeholder="Click para elegir..." icon="clock" v-model="childData.fecha"></b-clockpicker>
         </b-field>
 
         <b-field label="Descripción">
-          <b-input v-model="description" maxlength="500" type="textarea"></b-input>
+          <b-input v-model="childData.descripcion" maxlength="500" type="textarea"></b-input>
         </b-field>
 
         <div class="columns is-mobile">
           <div class="column is-6">
             <b-field label="¿Disponible?">
-              <b-switch v-model="available" true-value="Si" false-value="No">{{ available }}</b-switch>
+              <b-switch
+                v-model="childData.disponible"
+                true-value="Si"
+                false-value="No"
+              >{{ childData.disponible }}</b-switch>
             </b-field>
           </div>
           <div class="column is-6">
             <b-field label="Cupos">
-              <b-numberinput v-model="capacity"></b-numberinput>
+              <b-numberinput v-model="childData.cupos"></b-numberinput>
             </b-field>
           </div>
         </div>
@@ -48,35 +52,42 @@
           </label>
         </div>
 
-        <img :src="image">
+        <img :src="childData.imagen">
 
         <div class="actualizar has-text-right">
-          <b-button @click="actualizarTaller" type="is-primary">Actualizar Taller</b-button>
+          <b-button @click="$emit('communication', childData)" type="is-primary">Actualizar Taller</b-button>
         </div>
       </b-tab-item>
       <b-tab-item label="Inscripciones">
-        <b-button @click="$emit('repollo')" type="is-primary">Repollo</b-button>
+        <b-button type="is-primary">ParentData</b-button>
       </b-tab-item>
     </b-tabs>
   </div>
 </template>
 
 <script>
-import { db } from "@/helpers/firebaseInit.js";
-
 export default {
   data: function() {
     const today = new Date();
     return {
       activeTab: 0,
       minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-      name: this.nombre,
-      date: new Date(this.fechaRaw.seconds * 1000),
-      time: new Date(this.fechaRaw.seconds * 1000),
-      description: this.descripcion,
-      available: this.disponible,
-      image: this.imagen,
-      capacity: this.cupos
+      childData: {
+        nombre: this.parentData.nombre,
+        fecha: new Date(
+          new Date(this.parentData.fecha.seconds * 1000).getFullYear(),
+          new Date(this.parentData.fecha.seconds * 1000).getMonth(),
+          new Date(this.parentData.fecha.seconds * 1000).getDate(),
+          new Date(this.parentData.fecha.seconds * 1000).getHours(),
+          new Date(this.parentData.fecha.seconds * 1000).getMinutes(),
+          new Date(this.parentData.fecha.seconds * 1000).getSeconds(),
+          new Date(this.parentData.fecha.seconds * 1000).getMilliseconds()
+        ),
+        descripcion: this.parentData.descripcion,
+        disponible: this.parentData.disponible,
+        cupos: this.parentData.cupos,
+        imagen: this.parentData.imagen
+      }
     };
   },
   methods: {
@@ -85,82 +96,14 @@ export default {
       let reader = new FileReader();
       // eslint-disable-next-line
       reader.onload = file => {
-        this.image = reader.result;
+        this.childData.imagen = reader.result;
       };
       reader.readAsDataURL(file);
-    },
-    actualizarTaller() {
-      let fecha = new Date(
-        this.date.getFullYear(),
-        this.date.getMonth(),
-        this.date.getDate(),
-        this.time.getHours(),
-        this.time.getMinutes(),
-        this.time.getSeconds(),
-        this.time.getMilliseconds()
-      );
-
-      let docData = {
-        nombre: this.name,
-        fecha: fecha,
-        descripcion: this.description,
-        disponible: this.available,
-        cupos: this.capacity,
-        imagen: this.image
-      };
-
-      db.collection("talleres")
-        .doc(this.id)
-        .update(docData)
-        .then(() => {
-          this.$snackbar.open({
-            duration: 5000,
-            message: "El taller fue actualizado exitosamente.",
-            type: "is-success",
-            position: "is-bottom-right",
-            actionText: "Ok",
-            queue: false
-          });
-        }) // eslint-disable-next-line
-        .catch(error => {
-          this.$snackbar.open({
-            duration: 5000,
-            message: "Hubo un error al actualizar el taller.",
-            type: "is-warning",
-            position: "is-bottom-right",
-            actionText: "Ok",
-            queue: false
-          });
-        });
     }
   },
   props: {
-    id: {
-      type: String,
-      required: true
-    },
-    nombre: {
-      type: String,
-      required: true
-    },
-    fechaRaw: {
+    parentData: {
       type: Object,
-      required: true
-    },
-    descripcion: {
-      type: String,
-      required: true
-    },
-    imagen: {
-      type: String,
-      required: true
-    },
-    disponible: {
-      type: String,
-      required: true
-    },
-    cupos: {
-      type: Number,
       required: true
     }
   }

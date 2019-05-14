@@ -1,29 +1,19 @@
 <template>
-  <div v-if="!isEmpty(taller)">
+  <div v-if="!isEmpty(parentData)">
     <Header/>
     <Container v-if="this.accion == 'ver'">
       <Information
-        :nombre="taller.nombre"
-        :fecha="taller.fecha"
-        :hora="taller.hora"
-        :descripcion="taller.descripcion"
-        :imagen="taller.imagen"
+        :nombre="parentData.nombre"
+        :fecha="parentData.fecha"
+        :hora="parentData.hora"
+        :descripcion="parentData.descripcion"
+        :imagen="parentData.imagen"
       />
       <hr>
-      <Formulario :id="taller.id"/>
+      <Formulario :id="parentData.id"/>
     </Container>
     <Container v-else>
-      <Editar
-        :id="docID"
-        :nombre="taller.nombre"
-        :fechaRaw="taller.fecha"
-        :hora="taller.hora"
-        :descripcion="taller.descripcion"
-        :imagen="taller.imagen"
-        :disponible="taller.disponible"
-        :cupos="taller.cupos"
-        @repollo="repollito"
-      />
+      <Editar :parentData="parentData" @communication="handleDataBack"/>
     </Container>
   </div>
   <Loader v-else/>
@@ -42,8 +32,7 @@ export default {
   data() {
     return {
       accion: this.$route.params.accion,
-      taller: {},
-      docID: null
+      parentData: {}
     };
   },
   methods: {
@@ -53,8 +42,30 @@ export default {
       }
       return true;
     },
-    repollito() {
-      console.log("REPOLLO");
+    handleDataBack(event) {
+      db.collection("talleres")
+        .doc(this.parentData.id)
+        .update(event)
+        .then(() => {
+          this.$snackbar.open({
+            duration: 5000,
+            message: "El taller fue actualizado exitosamente.",
+            type: "is-success",
+            position: "is-bottom-right",
+            actionText: "Ok",
+            queue: false
+          });
+        }) // eslint-disable-next-line
+        .catch(error => {
+          this.$snackbar.open({
+            duration: 5000,
+            message: "Hubo un error al actualizar el taller.",
+            type: "is-warning",
+            position: "is-bottom-right",
+            actionText: "Ok",
+            queue: false
+          });
+        });
     }
   },
   mounted: function() {
@@ -63,8 +74,16 @@ export default {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          this.taller = doc.data();
-          this.docID = doc.id;
+          this.parentData = {
+            id: doc.id,
+            nombre: doc.data().nombre,
+            fecha: doc.data().fecha,
+            hora: doc.data().hora,
+            descripcion: doc.data().descripcion,
+            imagen: doc.data().imagen,
+            disponible: doc.data().disponible,
+            cupos: doc.data().cupos
+          };
         });
       });
   },
@@ -86,6 +105,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>
