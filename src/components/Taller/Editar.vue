@@ -54,7 +54,9 @@
           <b-button @click="actualizarTaller" type="is-primary">Actualizar Taller</b-button>
         </div>
       </b-tab-item>
-      <b-tab-item label="Inscripciones">Inscripciones</b-tab-item>
+      <b-tab-item label="Inscripciones">
+        <b-button @click="$emit('repollo')" type="is-primary">Repollo</b-button>
+      </b-tab-item>
     </b-tabs>
   </div>
 </template>

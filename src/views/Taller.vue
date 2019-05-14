@@ -22,6 +22,7 @@
         :imagen="taller.imagen"
         :disponible="taller.disponible"
         :cupos="taller.cupos"
+        @repollo="repollito"
       />
     </Container>
   </div>
@@ -51,6 +52,9 @@ export default {
         if (obj.hasOwnProperty(key)) return false;
       }
       return true;
+    },
+    repollito() {
+      console.log("REPOLLO");
     }
   },
   mounted: function() {
