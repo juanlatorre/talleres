@@ -9,10 +9,6 @@
   </div>
 </template>
 
-<script>
-export default {};
-</script>
-
 <style scoped>
 .gooey {
   position: absolute;
