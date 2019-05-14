@@ -23,9 +23,18 @@
           <b-input v-model="description" maxlength="500" type="textarea"></b-input>
         </b-field>
 
-        <b-field label="¿Disponible?">
-          <b-switch v-model="available" true-value="Si" false-value="No">{{ available }}</b-switch>
-        </b-field>
+        <div class="columns is-mobile">
+          <div class="column is-6">
+            <b-field label="¿Disponible?">
+              <b-switch v-model="available" true-value="Si" false-value="No">{{ available }}</b-switch>
+            </b-field>
+          </div>
+          <div class="column is-6">
+            <b-field label="Cupos">
+              <b-numberinput v-model="capacity"></b-numberinput>
+            </b-field>
+          </div>
+        </div>
 
         <div class="file">
           <label class="file-label">
@@ -51,6 +60,8 @@
 </template>
 
 <script>
+import { db } from "@/helpers/firebaseInit.js";
+
 export default {
   data: function() {
     const today = new Date();
@@ -62,7 +73,8 @@ export default {
       time: new Date(this.fechaRaw.seconds * 1000),
       description: this.descripcion,
       available: this.disponible,
-      image: this.imagen
+      image: this.imagen,
+      capacity: this.cupos
     };
   },
   methods: {
@@ -76,7 +88,48 @@ export default {
       reader.readAsDataURL(file);
     },
     actualizarTaller() {
-      console.log("taller actualizado");
+      let fecha = new Date(
+        this.date.getFullYear(),
+        this.date.getMonth(),
+        this.date.getDate(),
+        this.time.getHours(),
+        this.time.getMinutes(),
+        this.time.getSeconds(),
+        this.time.getMilliseconds()
+      );
+
+      let docData = {
+        nombre: this.name,
+        fecha: fecha,
+        descripcion: this.description,
+        disponible: this.available,
+        cupos: this.capacity,
+        imagen: this.image
+      };
+
+      db.collection("talleres")
+        .doc(this.id)
+        .update(docData)
+        .then(() => {
+          this.$snackbar.open({
+            duration: 5000,
+            message: "El taller fue actualizado exitosamente.",
+            type: "is-success",
+            position: "is-bottom-right",
+            actionText: "Ok",
+            queue: false
+          });
+        }) // eslint-disable-next-line
+        .catch(error => {
+          this.$snackbar.open({
+            duration: 5000,
+            message: "Hubo un error al actualizar el taller.",
+            type: "is-warning",
+            position: "is-bottom-right",
+            actionText: "Ok",
+            queue: false
+          });
+        });
     }
   },
   props: {
@@ -113,6 +166,9 @@ export default {
 </script>
 
 <style scoped>
+.file {
+  margin-top: 2em;
+}
 .actualizar {
   margin-top: 1em;
 }
