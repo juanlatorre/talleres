@@ -2,13 +2,7 @@
   <div v-if="!isEmpty(parentData)">
     <Header/>
     <Container v-if="this.accion == 'ver'">
-      <Information
-        :nombre="parentData.nombre"
-        :fecha="parentData.fecha"
-        :hora="parentData.hora"
-        :descripcion="parentData.descripcion"
-        :imagen="parentData.imagen"
-      />
+      <Information :parentData="parentData"/>
       <hr>
       <Formulario :id="parentData.id"/>
     </Container>
