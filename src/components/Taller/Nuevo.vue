@@ -33,7 +33,7 @@
       </div>
       <div class="column is-6">
         <b-field label="Cupos">
-          <b-numberinput v-model="childData.cupos"></b-numberinput>
+          <b-numberinput min="0" v-model="childData.cupos"></b-numberinput>
         </b-field>
       </div>
     </div>

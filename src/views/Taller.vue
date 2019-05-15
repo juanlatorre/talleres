@@ -72,22 +72,30 @@ export default {
         event.nombre !== ""
       ) {
         db.collection("talleres")
-          .doc(this.parentData.id)
-          .update(event)
+          .add({
+            nombre: event.nombre,
+            cupos: event.cupos,
+            descripcion: event.descripcion,
+            disponible: event.disponible,
+            fecha: event.fecha,
+            imagen: event.imagen,
+            inscritos: []
+          })
           .then(() => {
             this.$snackbar.open({
               duration: 5000,
-              message: "El taller fue actualizado exitosamente.",
+              message: "El taller fue creado exitosamente.",
               type: "is-success",
               position: "is-bottom-right",
               actionText: "Ok",
               queue: false
             });
+            this.$router.replace("/");
           }) // eslint-disable-next-line
           .catch(error => {
             this.$snackbar.open({
               duration: 5000,
-              message: "Hubo un error al actualizar el taller.",
+              message: "Hubo un error al crear el taller.",
               type: "is-danger",
               position: "is-bottom-right",
               actionText: "Ok",
@@ -108,7 +116,7 @@ export default {
   },
   mounted: function() {
     if (this.$route.params.accion == "nuevo") {
-      console.log("nuevo");
+      this.parentData = { data: null };
     } else {
       db.collection("talleres")
         .doc(this.$route.params.id)

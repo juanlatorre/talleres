@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     nuevoTaller() {
-      this.$router.push("/taller/nuevo/0");
+      this.$router.push("/taller/nuevo");
     },
     ...mapActions({
       logout: "logout"
