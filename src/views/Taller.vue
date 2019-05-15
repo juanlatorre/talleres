@@ -107,25 +107,29 @@ export default {
     }
   },
   mounted: function() {
-    db.collection("talleres")
-      .doc(this.$route.params.id)
-      .get()
-      .then(taller => {
-        if (taller.exists) {
-          this.parentData = {
-            id: taller.id,
-            nombre: taller.data().nombre,
-            fecha: taller.data().fecha,
-            hora: taller.data().hora,
-            descripcion: taller.data().descripcion,
-            imagen: taller.data().imagen,
-            disponible: taller.data().disponible,
-            cupos: taller.data().cupos
-          };
-        } else {
-          this.$router.replace("/");
-        }
-      });
+    if (this.$route.params.accion == "nuevo") {
+      console.log("nuevo");
+    } else {
+      db.collection("talleres")
+        .doc(this.$route.params.id)
+        .get()
+        .then(taller => {
+          if (taller.exists) {
+            this.parentData = {
+              id: taller.id,
+              nombre: taller.data().nombre,
+              fecha: taller.data().fecha,
+              hora: taller.data().hora,
+              descripcion: taller.data().descripcion,
+              imagen: taller.data().imagen,
+              disponible: taller.data().disponible,
+              cupos: taller.data().cupos
+            };
+          } else {
+            this.$router.replace("/");
+          }
+        });
+    }
   },
   components: {
     Header,
