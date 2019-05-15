@@ -51,7 +51,9 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            this.talleres.push(doc.data());
+            let allDocData = doc.data();
+            allDocData.id = doc.id;
+            this.talleres.push(allDocData);
           });
         });
     },
@@ -63,25 +65,18 @@ export default {
     },
     eliminarTaller(id) {
       db.collection("talleres")
-        .where("id", "==", id)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            db.collection("talleres")
-              .doc(doc.id)
-              .delete()
-              .then(() => {
-                this.$snackbar.open({
-                  duration: 3000,
-                  message: "El taller ha sido eliminado.",
-                  type: "is-success",
-                  position: "is-bottom-right",
-                  actionText: "Ok",
-                  queue: false
-                });
-                this.leerDatos();
-              });
+        .doc(id)
+        .delete()
+        .then(() => {
+          this.$snackbar.open({
+            duration: 3000,
+            message: "El taller ha sido eliminado.",
+            type: "is-success",
+            position: "is-bottom-right",
+            actionText: "Ok",
+            queue: false
           });
+          this.leerDatos();
         });
     },
     fecha(date) {

@@ -32,6 +32,7 @@
               <b-icon icon="caret-down"></b-icon>
             </a>
 
+            <b-dropdown-item @click="nuevoTaller" aria-role="listitem">Crear Taller</b-dropdown-item>
             <b-dropdown-item @click="logout" aria-role="listitem">Cerrar Sesión</b-dropdown-item>
           </b-dropdown>
         </div>
@@ -50,6 +51,9 @@ export default {
     };
   },
   methods: {
+    nuevoTaller() {
+      this.$router.push("/taller/nuevo/0");
+    },
     ...mapActions({
       logout: "logout"
     })

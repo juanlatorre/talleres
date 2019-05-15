@@ -6,8 +6,11 @@
       <hr>
       <Formulario :id="parentData.id"/>
     </Container>
+    <Container v-else-if="this.accion == 'editar'">
+      <Editar :parentData="parentData" @communication="handleEditarBack"/>
+    </Container>
     <Container v-else>
-      <Editar :parentData="parentData" @communication="handleDataBack"/>
+      <Nuevo @communication="handleNuevoBack"/>
     </Container>
   </div>
   <Loader v-else/>
@@ -20,6 +23,7 @@ import Container from "@/components/Taller/Container.vue";
 import Information from "@/components/Taller/Information.vue";
 import Formulario from "@/components/Taller/Formulario.vue";
 import Editar from "@/components/Taller/Editar.vue";
+import Nuevo from "@/components/Taller/Nuevo.vue";
 import { db } from "@/helpers/firebaseInit.js";
 
 export default {
@@ -36,7 +40,7 @@ export default {
       }
       return true;
     },
-    handleDataBack(event) {
+    handleEditarBack(event) {
       db.collection("talleres")
         .doc(this.parentData.id)
         .update(event)
@@ -54,32 +58,70 @@ export default {
           this.$snackbar.open({
             duration: 5000,
             message: "Hubo un error al actualizar el taller.",
-            type: "is-warning",
+            type: "is-danger",
             position: "is-bottom-right",
             actionText: "Ok",
             queue: false
           });
         });
+    },
+    handleNuevoBack(event) {
+      if (
+        event.descripcion !== "" &&
+        event.imagen !== "" &&
+        event.nombre !== ""
+      ) {
+        db.collection("talleres")
+          .doc(this.parentData.id)
+          .update(event)
+          .then(() => {
+            this.$snackbar.open({
+              duration: 5000,
+              message: "El taller fue actualizado exitosamente.",
+              type: "is-success",
+              position: "is-bottom-right",
+              actionText: "Ok",
+              queue: false
+            });
+          }) // eslint-disable-next-line
+          .catch(error => {
+            this.$snackbar.open({
+              duration: 5000,
+              message: "Hubo un error al actualizar el taller.",
+              type: "is-danger",
+              position: "is-bottom-right",
+              actionText: "Ok",
+              queue: false
+            });
+          });
+      } else {
+        this.$snackbar.open({
+          duration: 5000,
+          message: "Por favor llena todos los campos.",
+          type: "is-warning",
+          position: "is-bottom-right",
+          actionText: "Ok",
+          queue: false
+        });
+      }
     }
   },
   mounted: function() {
     db.collection("talleres")
-      .where("id", "==", Number(this.$route.params.id))
+      .doc(this.$route.params.id)
       .get()
-      .then(querySnapshot => {
-        if (!querySnapshot.empty) {
-          querySnapshot.forEach(doc => {
-            this.parentData = {
-              id: doc.id,
-              nombre: doc.data().nombre,
-              fecha: doc.data().fecha,
-              hora: doc.data().hora,
-              descripcion: doc.data().descripcion,
-              imagen: doc.data().imagen,
-              disponible: doc.data().disponible,
-              cupos: doc.data().cupos
-            };
-          });
+      .then(taller => {
+        if (taller.exists) {
+          this.parentData = {
+            id: taller.id,
+            nombre: taller.data().nombre,
+            fecha: taller.data().fecha,
+            hora: taller.data().hora,
+            descripcion: taller.data().descripcion,
+            imagen: taller.data().imagen,
+            disponible: taller.data().disponible,
+            cupos: taller.data().cupos
+          };
         } else {
           this.$router.replace("/");
         }
@@ -91,12 +133,14 @@ export default {
     Information,
     Loader,
     Formulario,
-    Editar
+    Editar,
+    Nuevo
   },
   beforeCreate() {
     if (
       this.$route.params.accion !== "ver" &&
-      this.$route.params.accion !== "editar"
+      this.$route.params.accion !== "editar" &&
+      this.$route.params.accion !== "nuevo"
     ) {
       this.$router.replace("/");
     }
