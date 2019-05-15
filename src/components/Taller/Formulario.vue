@@ -21,13 +21,7 @@
       :type="{'is-danger': errors.has('telefono')}"
       :message="errors.first('telefono')"
     >
-      <b-input
-        v-model="telefono"
-        type="phone"
-        name="telefono"
-        v-validate="'required'"
-        maxlength="9"
-      />
+      <b-input v-model="telefono" type="number" name="telefono" v-validate="'required'"/>
     </b-field>
 
     <button class="button is-primary" type="submit">Enviar</button>

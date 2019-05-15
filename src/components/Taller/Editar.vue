@@ -59,7 +59,57 @@
         </div>
       </b-tab-item>
       <b-tab-item label="Inscripciones">
-        <b-button type="is-primary">ParentData</b-button>
+        <div class="top">
+          <p
+            class="has-text-weight-bold"
+          >{{childData.inscritos.length!==1 ? childData.inscritos.length + " inscritos" : childData.inscritos.length + " inscrito"}}</p>
+          <b-dropdown position="is-bottom-left" aria-role="list">
+            <b-button type="is-text" slot="trigger">
+              <b-icon icon="ellipsis-v" size="is-small"></b-icon>
+            </b-button>
+
+            <b-dropdown-item aria-role="listitem" class="valign">
+              <b-icon icon="file-excel"></b-icon>Descargar Planilla
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" class="valign">
+              <b-icon icon="times"></b-icon>Limpiar Inscripciones
+            </b-dropdown-item>
+          </b-dropdown>
+        </div>
+
+        <b-table
+          :data="childData.inscritos.length!==0 ? childData.inscritos : []"
+          :striped="true"
+          :hoverable="true"
+          :mobile-cards="false"
+        >
+          <template slot-scope="props">
+            <b-table-column field="nombre" label="Nombre" centered sortable>{{ props.row.nombre }}</b-table-column>
+            <b-table-column field="correo" label="Correo" centered sortable>{{ props.row.correo }}</b-table-column>
+            <b-table-column
+              field="telefono"
+              label="Teléfono"
+              centered
+              sortable
+            >{{ props.row.telefono }}</b-table-column>
+            <b-table-column label="Pagado" centered>
+              <div class="field">
+                <b-switch v-model="props.row.pagado"></b-switch>
+              </div>
+            </b-table-column>
+          </template>
+
+          <template slot="empty">
+            <section class="section">
+              <div class="content has-text-grey has-text-centered">
+                <p>
+                  <b-icon icon="sad-tear" size="is-large"></b-icon>
+                </p>
+                <p>No hay nadie inscrito en este taller.</p>
+              </div>
+            </section>
+          </template>
+        </b-table>
       </b-tab-item>
     </b-tabs>
   </div>
@@ -70,7 +120,7 @@ export default {
   data: function() {
     const today = new Date();
     return {
-      activeTab: 0,
+      activeTab: 1,
       minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
       childData: {
         nombre: this.parentData.nombre,
@@ -86,7 +136,8 @@ export default {
         descripcion: this.parentData.descripcion,
         disponible: this.parentData.disponible,
         cupos: this.parentData.cupos,
-        imagen: this.parentData.imagen
+        imagen: this.parentData.imagen,
+        inscritos: this.parentData.inscritos
       }
     };
   },
@@ -120,5 +171,16 @@ export default {
 
 img {
   margin-top: 0.5em;
+}
+.top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+.valign {
+  display: flex;
+  align-items: center;
 }
 </style>

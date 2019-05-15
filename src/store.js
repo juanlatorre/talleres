@@ -23,10 +23,8 @@ const store = new Vuex.Store({
         .signInWithEmailAndPassword(credentials.email, credentials.password)
         .then(response => {
           state.user = response.user;
-        })
-        .catch(error => {
-          console.error(error.message);
-        });
+        }) //eslint-disable-next-line
+        .catch(error => {});
     },
     logout() {
       // eslint-disable-next-line

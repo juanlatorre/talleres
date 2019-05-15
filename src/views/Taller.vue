@@ -131,7 +131,8 @@ export default {
               descripcion: taller.data().descripcion,
               imagen: taller.data().imagen,
               disponible: taller.data().disponible,
-              cupos: taller.data().cupos
+              cupos: taller.data().cupos,
+              inscritos: taller.data().inscritos
             };
           } else {
             this.$router.replace("/");
