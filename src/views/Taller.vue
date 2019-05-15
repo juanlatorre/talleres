@@ -67,18 +67,22 @@ export default {
       .where("id", "==", Number(this.$route.params.id))
       .get()
       .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          this.parentData = {
-            id: doc.id,
-            nombre: doc.data().nombre,
-            fecha: doc.data().fecha,
-            hora: doc.data().hora,
-            descripcion: doc.data().descripcion,
-            imagen: doc.data().imagen,
-            disponible: doc.data().disponible,
-            cupos: doc.data().cupos
-          };
-        });
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(doc => {
+            this.parentData = {
+              id: doc.id,
+              nombre: doc.data().nombre,
+              fecha: doc.data().fecha,
+              hora: doc.data().hora,
+              descripcion: doc.data().descripcion,
+              imagen: doc.data().imagen,
+              disponible: doc.data().disponible,
+              cupos: doc.data().cupos
+            };
+          });
+        } else {
+          this.$router.replace("/");
+        }
       });
   },
   components: {

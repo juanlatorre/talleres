@@ -28,7 +28,7 @@
         <div class="navbar-item">
           <b-dropdown aria-role="list" class="is-bottom-left">
             <a class="navbar-item is-primary button" slot="trigger" role="button">
-              <span>Ajustes</span>
+              <span>Menú</span>
               <b-icon icon="caret-down"></b-icon>
             </a>
 
