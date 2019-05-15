@@ -40,7 +40,7 @@ import firebase, { db } from "@/helpers/firebaseInit.js";
 export default {
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true
     }
   },

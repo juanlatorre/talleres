@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-content" @click="abrirTaller(taller.id)">
           <p class="title is-5">{{taller.nombre}}</p>
-          <p class="subtitle">{{taller.fecha}}</p>
+          <p class="subtitle">{{fecha(taller.fecha.seconds)}}</p>
         </div>
         <footer class="card-footer">
           <p class="card-footer-item">
@@ -83,6 +83,14 @@ export default {
               });
           });
         });
+    },
+    fecha(date) {
+      let dt = new Date(date * 1000);
+      return dt.toLocaleDateString("es-CL", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+      });
     }
   }
 };
