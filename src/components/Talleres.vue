@@ -34,12 +34,8 @@
 
 <script>
 import { db } from "@/helpers/firebaseInit.js";
-import Loader from "@/components/Loader.vue";
 
 export default {
-  components: {
-    Loader
-  },
   data() {
     return {
       talleres: []

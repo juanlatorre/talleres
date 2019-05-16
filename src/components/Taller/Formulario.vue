@@ -30,6 +30,7 @@
 
 <script>
 import firebase, { db } from "@/helpers/firebaseInit.js";
+import * as emailjs from "emailjs-com";
 
 export default {
   props: {
@@ -60,6 +61,42 @@ export default {
               })
             })
             .then(() => {
+              var templateParams = {
+                nombre: this.nombre,
+                to_email: this.correo
+              };
+
+              emailjs
+                .send(
+                  "smtp_server",
+                  "template_PS32idzL",
+                  templateParams,
+                  "user_RLFjtWwa9BM99xCAsydHs"
+                )
+                .then(
+                  function(response) {
+                    console.log("SUCCESS!", response.status, response.text);
+                  },
+                  function(err) {
+                    console.log("FAILED...", err);
+                  }
+                );
+              // enviar correo a inscrito con información de pago
+              // Email.send({
+              //   SecureToken: "01235337-f34d-4a6f-aff5-5917a538abe1",
+              //   To: "juanlatorreharcha@gmail.com",
+              //   From: "noreply@talleresdecocina.cl",
+              //   Subject: "Información de pago Talleres Cabo Blanco",
+              //   Body: "<h1>And this is the body</h1><br><br><p>Hola amigo</p>"
+              // })
+              // enviar correo a karime informando que alguien se inscribió
+              // Email.send({
+              //   SecureToken: "01235337-f34d-4a6f-aff5-5917a538abe1",
+              //   To: "them@website.com",
+              //   From: "you@isp.com",
+              //   Subject: "This is the subject",
+              //   Body: "And this is the body"
+              // });
               this.nombre = null;
               this.correo = null;
               this.telefono = null;
