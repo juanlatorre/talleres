@@ -4,7 +4,7 @@
     <Container v-if="this.accion == 'ver'">
       <Information :parentData="parentData"/>
       <hr>
-      <Formulario :id="parentData.id"/>
+      <Formulario :id="parentData.id" :nombreTaller="parentData.nombre"/>
     </Container>
     <Container v-else-if="this.accion == 'editar'">
       <Editar
