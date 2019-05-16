@@ -68,10 +68,14 @@
               <b-icon icon="ellipsis-v" size="is-small"></b-icon>
             </b-button>
 
-            <b-dropdown-item aria-role="listitem" class="valign">
+            <b-dropdown-item
+              aria-role="listitem"
+              class="valign"
+              disabled="childData.inscritos.length===0"
+            >
               <b-icon icon="file-excel"></b-icon>Descargar Planilla
             </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem" class="valign">
+            <b-dropdown-item aria-role="listitem" class="valign" @click="$emit('clear')">
               <b-icon icon="times"></b-icon>Limpiar Inscripciones
             </b-dropdown-item>
           </b-dropdown>
@@ -94,7 +98,7 @@
             >{{ props.row.telefono }}</b-table-column>
             <b-table-column label="Pagado" centered>
               <div class="field">
-                <b-switch v-model="props.row.pagado"></b-switch>
+                <b-switch @input="$emit('communication', childData)" v-model="props.row.pagado"></b-switch>
               </div>
             </b-table-column>
           </template>

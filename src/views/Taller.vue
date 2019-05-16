@@ -7,7 +7,12 @@
       <Formulario :id="parentData.id"/>
     </Container>
     <Container v-else-if="this.accion == 'editar'">
-      <Editar :parentData="parentData" @communication="handleEditarBack"/>
+      <Editar
+        :parentData="parentData"
+        @communication="handleEditarBack"
+        @clear="handleClear"
+        :key="editarKey"
+      />
     </Container>
     <Container v-else>
       <Nuevo @communication="handleNuevoBack"/>
@@ -30,7 +35,8 @@ export default {
   data() {
     return {
       accion: this.$route.params.accion,
-      parentData: {}
+      parentData: {},
+      editarKey: 0
     };
   },
   methods: {
@@ -112,6 +118,45 @@ export default {
           queue: false
         });
       }
+    },
+    handleClear() {
+      this.$dialog.confirm({
+        title: "Cuidado",
+        message:
+          "¿Estás seguro de querer <b>borrar</b> todos los inscritos de este taller? Esta acción no se puede deshacer.",
+        cancelText: "Cancelar",
+        confirmText: "Borrar Inscritos",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => {
+          db.collection("talleres")
+            .doc(this.parentData.id)
+            .update({
+              inscritos: []
+            })
+            .then(() => {
+              this.$snackbar.open({
+                duration: 5000,
+                message: "El taller fue actualizado exitosamente.",
+                type: "is-success",
+                position: "is-bottom-right",
+                actionText: "Ok",
+                queue: false
+              });
+              location.reload();
+            }) // eslint-disable-next-line
+            .catch(error => {
+              this.$snackbar.open({
+                duration: 5000,
+                message: "Hubo un error al actualizar el taller.",
+                type: "is-danger",
+                position: "is-bottom-right",
+                actionText: "Ok",
+                queue: false
+              });
+            });
+        }
+      });
     }
   },
   mounted: function() {
