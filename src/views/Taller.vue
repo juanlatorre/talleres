@@ -11,7 +11,7 @@
         :parentData="parentData"
         @communication="handleEditarBack"
         @clear="handleClear"
-        :key="editarKey"
+        @xlsx="handleXlsx"
       />
     </Container>
     <Container v-else>
@@ -30,13 +30,13 @@ import Formulario from "@/components/Taller/Formulario.vue";
 import Editar from "@/components/Taller/Editar.vue";
 import Nuevo from "@/components/Taller/Nuevo.vue";
 import { db } from "@/helpers/firebaseInit.js";
+import XLSX from "xlsx";
 
 export default {
   data() {
     return {
       accion: this.$route.params.accion,
-      parentData: {},
-      editarKey: 0
+      parentData: {}
     };
   },
   methods: {
@@ -157,6 +157,14 @@ export default {
             });
         }
       });
+    },
+    handleXlsx(event) {
+      let data = XLSX.utils.json_to_sheet(event);
+      const workbook = XLSX.utils.book_new();
+      const filename = "lista-inscritos";
+      XLSX.utils.book_append_sheet(workbook, data, filename);
+      XLSX.writeFile(workbook, `${filename}.xlsx`);
+      console.log("jaja");
     }
   },
   mounted: function() {

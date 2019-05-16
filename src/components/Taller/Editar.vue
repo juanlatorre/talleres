@@ -71,7 +71,8 @@
             <b-dropdown-item
               aria-role="listitem"
               class="valign"
-              disabled="childData.inscritos.length===0"
+              :disabled="childData.inscritos.length===0 ? true : false"
+              @click="$emit('xlsx', childData.inscritos)"
             >
               <b-icon icon="file-excel"></b-icon>Descargar Planilla
             </b-dropdown-item>
