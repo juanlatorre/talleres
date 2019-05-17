@@ -24,7 +24,7 @@
         </b-field>
 
         <div class="columns is-mobile">
-          <div class="column is-6">
+          <div class="column is-4">
             <b-field label="¿Disponible?">
               <b-switch
                 v-model="childData.disponible"
@@ -33,9 +33,14 @@
               >{{ childData.disponible }}</b-switch>
             </b-field>
           </div>
-          <div class="column is-6">
+          <div class="column is-4">
             <b-field label="Cupos">
-              <b-numberinput min="0" v-model="childData.cupos"></b-numberinput>
+              <b-numberinput min="0" max="50" v-model="childData.cupos"></b-numberinput>
+            </b-field>
+          </div>
+          <div class="column is-4">
+            <b-field label="Precio">
+              <b-input min="0" type="number" v-model="childData.precio"></b-input>
             </b-field>
           </div>
         </div>
@@ -97,6 +102,7 @@
               centered
               sortable
             >{{ props.row.telefono }}</b-table-column>
+            <b-table-column field="precio" label="Precio" centered sortable>{{ props.row.precio }}</b-table-column>
             <b-table-column label="Pagado" centered>
               <div class="field">
                 <b-switch @input="$emit('communication', childData)" v-model="props.row.pagado"></b-switch>
@@ -125,7 +131,7 @@ export default {
   data: function() {
     const today = new Date();
     return {
-      activeTab: 1,
+      activeTab: 0,
       minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
       childData: {
         nombre: this.parentData.nombre,
@@ -142,7 +148,8 @@ export default {
         disponible: this.parentData.disponible,
         cupos: this.parentData.cupos,
         imagen: this.parentData.imagen,
-        inscritos: this.parentData.inscritos
+        inscritos: this.parentData.inscritos,
+        precio: this.parentData.precio
       }
     };
   },

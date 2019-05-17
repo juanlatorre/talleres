@@ -85,6 +85,7 @@ export default {
             disponible: event.disponible,
             fecha: event.fecha,
             imagen: event.imagen,
+            precio: event.precio,
             inscritos: []
           })
           .then(() => {
@@ -164,7 +165,6 @@ export default {
       const filename = "lista-inscritos";
       XLSX.utils.book_append_sheet(workbook, data, filename);
       XLSX.writeFile(workbook, `${filename}.xlsx`);
-      console.log("jaja");
     }
   },
   mounted: function() {
@@ -185,7 +185,8 @@ export default {
               imagen: taller.data().imagen,
               disponible: taller.data().disponible,
               cupos: taller.data().cupos,
-              inscritos: taller.data().inscritos
+              inscritos: taller.data().inscritos,
+              precio: taller.data().precio
             };
           } else {
             this.$router.replace("/");

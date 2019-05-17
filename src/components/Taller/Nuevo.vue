@@ -22,7 +22,7 @@
     </b-field>
 
     <div class="columns is-mobile">
-      <div class="column is-6">
+      <div class="column is-4">
         <b-field label="¿Disponible?">
           <b-switch
             v-model="childData.disponible"
@@ -31,9 +31,14 @@
           >{{ childData.disponible }}</b-switch>
         </b-field>
       </div>
-      <div class="column is-6">
+      <div class="column is-4">
         <b-field label="Cupos">
-          <b-numberinput min="0" v-model="childData.cupos"></b-numberinput>
+          <b-numberinput min="0" max="50" v-model="childData.cupos"></b-numberinput>
+        </b-field>
+      </div>
+      <div class="column is-4">
+        <b-field label="Precio">
+          <b-input min="0" type="number" v-model="childData.precio"></b-input>
         </b-field>
       </div>
     </div>
@@ -70,6 +75,7 @@ export default {
         descripcion: "",
         disponible: "Si",
         cupos: 0,
+        precio: 0,
         imagen: ""
       }
     };
